@@ -135,7 +135,7 @@ Rigidbody2D:
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 0
 --- !u!114 &1853075558759562863
 MonoBehaviour:
@@ -169,7 +169,6 @@ MonoBehaviour:
   size: 5
   NextSuica: {fileID: 8798729699660159032, guid: 28b6aa8d845e6b84199b0bf9ede24311, type: 3}
   score: 32
-  ripe: 0
 --- !u!1 &5178429433507197257
 GameObject:
   m_ObjectHideFlags: 0

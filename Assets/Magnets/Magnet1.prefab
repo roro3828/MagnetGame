@@ -78,7 +78,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 0, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -103,7 +103,6 @@ MonoBehaviour:
   size: 1
   NextSuica: {fileID: 7100672549379685347, guid: a7523c081c698da45a831fbd6e07737c, type: 3}
   score: 1
-  ripe: 0
 --- !u!50 &2952358560870814785
 Rigidbody2D:
   serializedVersion: 4
@@ -123,7 +122,7 @@ Rigidbody2D:
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 0
 --- !u!58 &2952358560870814786
 CircleCollider2D:
@@ -155,4 +154,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MagneticPoles:
   - transform: {fileID: 2952358560870814814}
-    m: 0.1
+    m: 0.2

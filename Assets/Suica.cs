@@ -13,6 +13,7 @@ public class Suica : MonoBehaviour
     private GameObject NextSuica;
     [SerializeField]
     private int score=1;
+    [System.NonSerialized]
     public bool ripe=false;
     private GameObject OtherObject=null;
     private GameManager gameManager;

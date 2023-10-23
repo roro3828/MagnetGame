@@ -78,7 +78,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 0, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -103,7 +103,6 @@ MonoBehaviour:
   size: 6
   NextSuica: {fileID: 2379321665852681585, guid: d82c6491261c3254bbb36659eef82de1, type: 3}
   score: 64
-  ripe: 0
 --- !u!114 &-238816552078871623
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -131,14 +130,14 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 30
+  m_Mass: 80
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 1
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 0
 --- !u!58 &8798729699660159033
 CircleCollider2D:

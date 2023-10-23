@@ -7,6 +7,12 @@ public class GameManager : MonoBehaviour
 {
     [SerializeField]
     private GameObject[] Suicas;
+    [SerializeField]
+    private GameObject Dropper;
+    [SerializeField]
+    private float movelimit=10f;
+    [SerializeField]
+    private float DropperSpeed=1f;
 
     [SerializeField]
     private Vector2Int GameAreaStart=new Vector2Int(-1,-1);
@@ -14,21 +20,42 @@ public class GameManager : MonoBehaviour
     private Vector2Int GameAreaEnd=new Vector2Int(1,1);
     [SerializeField]
     private int Score=0;
+    private bool interval=true;
     public int addScore(int score){
         this.Score+=score;
         return this.Score;
     }
-    // Start is called before the first frame update
+
+    private MainInput maininput;
+    void OnDisable()
+    {
+        maininput.Disable();
+    }
     void Start()
     {
-        StartCoroutine(loop());
+        maininput=new MainInput();
+        maininput.Enable();
     }
 
-    IEnumerator loop(){
-        while(true){
-            Instantiate(Suicas[UnityEngine.Random.Range(0,Suicas.Length)],this.transform.position,this.transform.rotation,this.transform);
-            yield return new WaitForSeconds(0.8f);
+    void Update()
+    {
+        Vector2 pos=Dropper.transform.position;
+        float input=maininput.Main.Move.ReadValue<float>();
+        pos+=new Vector2(input*Time.deltaTime*DropperSpeed,0);
+        if(-movelimit<=pos.x&&pos.x<=movelimit){
+            Dropper.transform.position=pos;
         }
+
+        if(0<maininput.Main.Drop.ReadValue<float>() && interval){
+            interval=false;
+            Instantiate(Suicas[UnityEngine.Random.Range(0,Suicas.Length)],Dropper.transform.position,Dropper.transform.rotation,this.transform);
+            StartCoroutine(Wait());
+        }
+    }
+
+    IEnumerator Wait(){
+        yield return new WaitForSeconds(0.7f);
+        interval=true;
     }
 
     public bool isInArea(Vector2 pos){
