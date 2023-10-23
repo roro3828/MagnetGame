@@ -847,7 +847,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Suicas:
-  - {fileID: 2379321665852681585, guid: d82c6491261c3254bbb36659eef82de1, type: 3}
+  - {fileID: 2952358560870814787, guid: 53e5a801b0bd1334c92c6f982efb2e53, type: 3}
+  - {fileID: 7100672549379685347, guid: a7523c081c698da45a831fbd6e07737c, type: 3}
+  - {fileID: 4429560174850726380, guid: 9ca5daefbb6df4448937ce3e6ab3eb82, type: 3}
   Dropper: {fileID: 1591122110}
   movelimit: 8.5
   DropperSpeed: 10

@@ -21,6 +21,8 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private int Score=0;
     private bool interval=true;
+    private GameObject nextSuica;
+    private GameObject DisplaySuica;
     public int addScore(int score){
         this.Score+=score;
         return this.Score;
@@ -35,6 +37,17 @@ public class GameManager : MonoBehaviour
     {
         maininput=new MainInput();
         maininput.Enable();
+        ShowNext();
+    }
+    void ShowNext(){
+
+        nextSuica=Suicas[UnityEngine.Random.Range(0,Suicas.Length)];
+        DisplaySuica=Instantiate(nextSuica,Dropper.transform.position,Dropper.transform.rotation,Dropper.transform);
+        foreach(Component c in DisplaySuica.GetComponents<Component>()){
+            if(!(c is Transform)&&!(c is MeshRenderer)&&!(c is SpriteRenderer)){
+                Destroy(c);
+            }
+        }
     }
 
     void Update()
@@ -48,13 +61,15 @@ public class GameManager : MonoBehaviour
 
         if(0<maininput.Main.Drop.ReadValue<float>() && interval){
             interval=false;
-            Instantiate(Suicas[UnityEngine.Random.Range(0,Suicas.Length)],Dropper.transform.position,Dropper.transform.rotation,this.transform);
+            Destroy(DisplaySuica);
+            Instantiate(nextSuica,Dropper.transform.position,Dropper.transform.rotation,this.transform);
             StartCoroutine(Wait());
         }
     }
 
     IEnumerator Wait(){
         yield return new WaitForSeconds(0.7f);
+        ShowNext();
         interval=true;
     }
 

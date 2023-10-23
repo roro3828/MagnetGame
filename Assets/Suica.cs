@@ -32,6 +32,7 @@ public class Suica : MonoBehaviour
     {
         if(!gameManager.isInArea(this.transform.position)){
             Debug.Log("GameOver");
+            Debug.Log(this.transform.position);
             UnityEditor.EditorApplication.isPaused=true;
             Destroy(this.gameObject);
         }
