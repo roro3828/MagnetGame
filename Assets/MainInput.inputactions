@@ -35,7 +35,7 @@
             ],
             "bindings": [
                 {
-                    "name": "1D Axis",
+                    "name": "KeyBoard",
                     "id": "3de9e6e2-6942-479e-8a9d-cf260cf39b5b",
                     "path": "1DAxis",
                     "interactions": "",
@@ -68,6 +68,39 @@
                     "isPartOfComposite": true
                 },
                 {
+                    "name": "GamePad",
+                    "id": "75d8f446-7cab-48e7-b7d7-c9291af8d68b",
+                    "path": "1DAxis",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Move",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "negative",
+                    "id": "9d97abfe-b493-46f8-abfd-8de12b16e158",
+                    "path": "<Gamepad>/leftStick/left",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "positive",
+                    "id": "99ba2b79-c588-4648-9bb7-edf7e4e3568e",
+                    "path": "<Gamepad>/leftStick/right",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
                     "name": "",
                     "id": "0c660432-723f-4e33-bce9-2c6ce678f7f1",
                     "path": "<Keyboard>/space",
@@ -79,7 +112,18 @@
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "1D Axis",
+                    "name": "",
+                    "id": "a3d14329-0a77-4c32-9c3b-4d15ac118f1b",
+                    "path": "<Gamepad>/buttonSouth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Drop",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "KeyBoard",
                     "id": "7a9fbbd2-7dce-4da7-b302-4f6b224383b7",
                     "path": "1DAxis",
                     "interactions": "",
@@ -104,6 +148,39 @@
                     "name": "positive",
                     "id": "bd158622-f17a-49c2-849d-8b87c3e092f7",
                     "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Turn",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "GamePad",
+                    "id": "0ef798d6-4d00-46e6-85bf-f4b577f0a592",
+                    "path": "1DAxis",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Turn",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "negative",
+                    "id": "cb970050-bf3f-4fe6-93f5-51f2cf3dedca",
+                    "path": "<Gamepad>/leftShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Turn",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "positive",
+                    "id": "293acfc9-bc78-4379-850f-ae20dd2226be",
+                    "path": "<Gamepad>/rightShoulder",
                     "interactions": "",
                     "processors": "",
                     "groups": "",

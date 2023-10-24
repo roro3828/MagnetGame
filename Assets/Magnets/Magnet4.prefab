@@ -102,7 +102,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   size: 4
   NextSuica: {fileID: 3472060052740575906, guid: 304eac9c7860f6949bb6eb3f72aab439, type: 3}
-  score: 16
+  score: 40
 --- !u!50 &4212014712553108276
 Rigidbody2D:
   serializedVersion: 4
@@ -155,3 +155,4 @@ MonoBehaviour:
   MagneticPoles:
   - transform: {fileID: 4212014712553108267}
     m: -0.8
+  magnetic: 0

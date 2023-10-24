@@ -102,7 +102,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   size: 2
   NextSuica: {fileID: 4429560174850726380, guid: 9ca5daefbb6df4448937ce3e6ab3eb82, type: 3}
-  score: 4
+  score: 5
 --- !u!50 &7100672549379685345
 Rigidbody2D:
   serializedVersion: 4

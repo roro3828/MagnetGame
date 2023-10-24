@@ -1243,6 +1243,7 @@ MonoBehaviour:
   - {fileID: 2952358560870814787, guid: 53e5a801b0bd1334c92c6f982efb2e53, type: 3}
   - {fileID: 7100672549379685347, guid: a7523c081c698da45a831fbd6e07737c, type: 3}
   - {fileID: 4429560174850726380, guid: 9ca5daefbb6df4448937ce3e6ab3eb82, type: 3}
+  - {fileID: 4212014712553108278, guid: 2fd5be015fc633249ae2e44e0cabe100, type: 3}
   Dropper: {fileID: 1591122110}
   movelimit: 8.5
   DropperSpeed: 10
@@ -1534,10 +1535,10 @@ RectTransform:
   m_Father: {fileID: 57298610}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.1, y: 0.8}
-  m_AnchorMax: {x: 0.3, y: 0.8}
-  m_AnchoredPosition: {x: 42.5, y: 20}
-  m_SizeDelta: {x: -19, y: 50}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 298, y: -200}
+  m_SizeDelta: {x: 288, y: 51}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &2086844177
 GameObject:
