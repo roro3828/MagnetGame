@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -21,8 +22,12 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private int Score=0;
     private bool interval=true;
-    private GameObject nextSuica;
-    private GameObject DisplaySuica;
+    [SerializeField]
+    private Transform[] SuicaDisplayTransform;
+    private GameObject[] nextSuica;
+    private GameObject[] DisplaySuica;
+    [SerializeField]
+    private TMP_Text textMesh;
     public int addScore(int score){
         this.Score+=score;
         return this.Score;
@@ -37,17 +42,42 @@ public class GameManager : MonoBehaviour
     {
         maininput=new MainInput();
         maininput.Enable();
+
+        int len=SuicaDisplayTransform.Length;
+        nextSuica=new GameObject[len+1];
+        DisplaySuica=new GameObject[len+1];
+
+        for(int i=1;i<len+1;i++){
+            nextSuica[i]=Suicas[0];
+        }
+
         ShowNext();
     }
     void ShowNext(){
+        int len=SuicaDisplayTransform.Length;
 
-        nextSuica=Suicas[UnityEngine.Random.Range(0,Suicas.Length)];
-        DisplaySuica=Instantiate(nextSuica,Dropper.transform.position,Dropper.transform.rotation,Dropper.transform);
-        foreach(Component c in DisplaySuica.GetComponents<Component>()){
-            if(!(c is Transform)&&!(c is MeshRenderer)&&!(c is SpriteRenderer)){
-                Destroy(c);
+        for(int i=0;i<len;i++){
+            nextSuica[i]=nextSuica[i+1];
+        }
+
+        nextSuica[len]=Suicas[UnityEngine.Random.Range(0,Suicas.Length)];
+        DisplaySuica[0]=Instantiate(nextSuica[0],Dropper.transform);
+
+        for(int i=1;i<len+1;i++){
+            DisplaySuica[i]=Instantiate(nextSuica[i],SuicaDisplayTransform[i-1]);
+        }
+        for(int i=0;i<len+1;i++){
+            foreach(Component c in DisplaySuica[i].GetComponents<Component>()){
+                if(!(c is Transform)&&!(c is MeshRenderer)&&!(c is SpriteRenderer)){
+                    Destroy(c);
+                }
             }
         }
+    }
+
+    void Drop(){
+        Destroy(DisplaySuica[0]);
+        Instantiate(nextSuica[0],Dropper.transform.position,Dropper.transform.rotation,this.transform);
     }
 
     void Update()
@@ -58,17 +88,23 @@ public class GameManager : MonoBehaviour
         if(-movelimit<=pos.x&&pos.x<=movelimit){
             Dropper.transform.position=pos;
         }
+        float r=maininput.Main.Turn.ReadValue<float>()*Time.deltaTime*60;
+        Dropper.transform.Rotate(0,0,-r);
 
         if(0<maininput.Main.Drop.ReadValue<float>() && interval){
             interval=false;
-            Destroy(DisplaySuica);
-            Instantiate(nextSuica,Dropper.transform.position,Dropper.transform.rotation,this.transform);
+            Drop();
             StartCoroutine(Wait());
         }
+
+        textMesh.text=Score.ToString();
     }
 
     IEnumerator Wait(){
         yield return new WaitForSeconds(0.7f);
+        for(int i=1;i<SuicaDisplayTransform.Length+1;i++){
+            Destroy(DisplaySuica[i]);
+        }
         ShowNext();
         interval=true;
     }

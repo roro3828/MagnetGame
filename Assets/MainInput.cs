@@ -44,6 +44,15 @@ public partial class @MainInput : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Turn"",
+                    ""type"": ""Button"",
+                    ""id"": ""a9aca913-c488-46bf-a232-d06126c58322"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -61,7 +70,7 @@ public partial class @MainInput : IInputActionCollection2, IDisposable
                 {
                     ""name"": ""negative"",
                     ""id"": ""c67a9d18-1d80-4181-a732-30aedbbe4268"",
-                    ""path"": ""<Keyboard>/leftArrow"",
+                    ""path"": ""<Keyboard>/a"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -72,7 +81,7 @@ public partial class @MainInput : IInputActionCollection2, IDisposable
                 {
                     ""name"": ""positive"",
                     ""id"": ""122e7896-b2b7-4870-8491-577d64af1430"",
-                    ""path"": ""<Keyboard>/rightArrow"",
+                    ""path"": ""<Keyboard>/d"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -90,6 +99,39 @@ public partial class @MainInput : IInputActionCollection2, IDisposable
                     ""action"": ""Drop"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""1D Axis"",
+                    ""id"": ""7a9fbbd2-7dce-4da7-b302-4f6b224383b7"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Turn"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""bd7e77de-106a-4090-bc25-2b55fd00e0f4"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Turn"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""bd158622-f17a-49c2-849d-8b87c3e092f7"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Turn"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         }
@@ -100,6 +142,7 @@ public partial class @MainInput : IInputActionCollection2, IDisposable
         m_Main = asset.FindActionMap("Main", throwIfNotFound: true);
         m_Main_Move = m_Main.FindAction("Move", throwIfNotFound: true);
         m_Main_Drop = m_Main.FindAction("Drop", throwIfNotFound: true);
+        m_Main_Turn = m_Main.FindAction("Turn", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -161,12 +204,14 @@ public partial class @MainInput : IInputActionCollection2, IDisposable
     private IMainActions m_MainActionsCallbackInterface;
     private readonly InputAction m_Main_Move;
     private readonly InputAction m_Main_Drop;
+    private readonly InputAction m_Main_Turn;
     public struct MainActions
     {
         private @MainInput m_Wrapper;
         public MainActions(@MainInput wrapper) { m_Wrapper = wrapper; }
         public InputAction @Move => m_Wrapper.m_Main_Move;
         public InputAction @Drop => m_Wrapper.m_Main_Drop;
+        public InputAction @Turn => m_Wrapper.m_Main_Turn;
         public InputActionMap Get() { return m_Wrapper.m_Main; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -182,6 +227,9 @@ public partial class @MainInput : IInputActionCollection2, IDisposable
                 @Drop.started -= m_Wrapper.m_MainActionsCallbackInterface.OnDrop;
                 @Drop.performed -= m_Wrapper.m_MainActionsCallbackInterface.OnDrop;
                 @Drop.canceled -= m_Wrapper.m_MainActionsCallbackInterface.OnDrop;
+                @Turn.started -= m_Wrapper.m_MainActionsCallbackInterface.OnTurn;
+                @Turn.performed -= m_Wrapper.m_MainActionsCallbackInterface.OnTurn;
+                @Turn.canceled -= m_Wrapper.m_MainActionsCallbackInterface.OnTurn;
             }
             m_Wrapper.m_MainActionsCallbackInterface = instance;
             if (instance != null)
@@ -192,6 +240,9 @@ public partial class @MainInput : IInputActionCollection2, IDisposable
                 @Drop.started += instance.OnDrop;
                 @Drop.performed += instance.OnDrop;
                 @Drop.canceled += instance.OnDrop;
+                @Turn.started += instance.OnTurn;
+                @Turn.performed += instance.OnTurn;
+                @Turn.canceled += instance.OnTurn;
             }
         }
     }
@@ -200,5 +251,6 @@ public partial class @MainInput : IInputActionCollection2, IDisposable
     {
         void OnMove(InputAction.CallbackContext context);
         void OnDrop(InputAction.CallbackContext context);
+        void OnTurn(InputAction.CallbackContext context);
     }
 }

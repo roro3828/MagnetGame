@@ -155,3 +155,4 @@ MonoBehaviour:
   MagneticPoles:
   - transform: {fileID: 7100672549379685374}
     m: -0.3
+  magnetic: 0

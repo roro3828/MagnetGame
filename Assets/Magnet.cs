@@ -18,13 +18,37 @@ public class Magnet : MonoBehaviour
     public Vector3 getPos(){
         return this.gameObject.transform.position;
     }
+    [SerializeField]
+    private bool magnetic=false;
 
     void Start()
     {
+        if(magnetic){
+            for(int i=0;i<MagneticPoles.Length;i++){
+                MagneticPoles[i].m=0;
+            }
+        }
     }
 
     void Update()
     {
+        if(magnetic){
+            MagneticPole[] mp=GetAllPoles();
+            
+            for(int i=0;i<this.MagneticPoles.Length;i++){
+                float F=0f;
+                for(int j=0;j<mp.Length;j++){
+                    Vector3 vec=this.MagneticPoles[i].transform.position-mp[j].transform.position;
+                    if(0.01f<vec.magnitude){
+                        float f=((mp[j].m)/(vec.magnitude*vec.magnitude));
+                        F+=f;
+                    }
+                }
+                //F=F/(float)(16*Math.PI*Math.PI*0.0000001);
+                this.MagneticPoles[i].m=-F;
+            }
+        }
+
         Rigidbody2D rig;
         if(this.TryGetComponent<Rigidbody2D>(out rig)){
             MagneticPole[] mp=GetAllPoles();
@@ -34,10 +58,11 @@ public class Magnet : MonoBehaviour
                 for(int j=0;j<mp.Length;j++){
                     Vector3 vec=this.MagneticPoles[i].transform.position-mp[j].transform.position;
                     if(0.01f<vec.magnitude){
-                        Vector3 f=vec.normalized*Time.deltaTime*(float)((this.MagneticPoles[i].m*mp[j].m)/(4*Math.PI*0.00000125663706212*vec.magnitude*vec.magnitude));
+                        Vector3 f=vec.normalized*Time.deltaTime*((this.MagneticPoles[i].m*mp[j].m)/(vec.magnitude*vec.magnitude));
                         F+=f;
                     }
                 }
+                F=F/(float)(16*Math.PI*Math.PI*0.0000001);
                 rig.AddForceAtPosition(F,this.MagneticPoles[i].transform.position);
             }
         }
