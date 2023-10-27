@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -20,9 +19,11 @@ public class Magnet : MonoBehaviour
     }
     [SerializeField]
     private bool magnetic=false;
+    private GameManager gameManager;
 
     void Start()
     {
+        gameManager=GameObject.Find("GameManager").GetComponent<GameManager>();
         if(magnetic){
             for(int i=0;i<MagneticPoles.Length;i++){
                 MagneticPoles[i].m=0;
@@ -32,6 +33,9 @@ public class Magnet : MonoBehaviour
 
     void Update()
     {
+        if(gameManager.isPaused){
+            return;
+        }
         if(magnetic){
             MagneticPole[] mp=GetAllPoles();
             
@@ -40,7 +44,7 @@ public class Magnet : MonoBehaviour
                 for(int j=0;j<mp.Length;j++){
                     Vector3 vec=this.MagneticPoles[i].transform.position-mp[j].transform.position;
                     if(0.01f<vec.magnitude){
-                        float f=((mp[j].m)/(vec.magnitude*vec.magnitude));
+                        float f=((mp[j].m)/(vec.magnitude*vec.magnitude+1));
                         F+=f;
                     }
                 }

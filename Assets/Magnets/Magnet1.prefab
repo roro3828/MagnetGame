@@ -101,7 +101,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   size: 1
-  NextSuica: {fileID: 7100672549379685347, guid: a7523c081c698da45a831fbd6e07737c, type: 3}
+  <NextSuica>k__BackingField: {fileID: 7100672549379685347, guid: a7523c081c698da45a831fbd6e07737c, type: 3}
   score: 1
 --- !u!50 &2952358560870814785
 Rigidbody2D:
@@ -155,3 +155,4 @@ MonoBehaviour:
   MagneticPoles:
   - transform: {fileID: 2952358560870814814}
     m: 0.2
+  magnetic: 0

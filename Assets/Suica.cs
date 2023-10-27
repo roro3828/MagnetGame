@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class Suica : MonoBehaviour
 {
@@ -10,14 +7,15 @@ public class Suica : MonoBehaviour
     public int getSize(){
         return size;
     }
-    [SerializeField]
-    private GameObject NextSuica;
+    [field:SerializeField]
+    public GameObject NextSuica{get;private set;}
     [SerializeField]
     private int score=1;
     [System.NonSerialized]
     public bool ripe=false;
     private GameObject OtherObject=null;
     private GameManager gameManager;
+
     public bool isOtherObjectNull(){
         return this.OtherObject==null;
     }
@@ -31,11 +29,11 @@ public class Suica : MonoBehaviour
 
     void Update()
     {
+        if(gameManager.isPaused){
+            return;
+        }
         if(!gameManager.isInArea(this.transform.position)){
-            Debug.Log("GameOver");
-            Debug.Log(this.transform.position);
-            UnityEditor.EditorApplication.isPaused=true;
-            Destroy(this.gameObject);
+            gameManager.GameOver();
         }
     }
     void OnCollisionEnter2D(Collision2D collisionInfo)
@@ -58,7 +56,7 @@ public class Suica : MonoBehaviour
 
     void GenNextSuica(Vector3 pos){
         if(this.NextSuica!=null){
-            GameObject nextSuica=Instantiate(this.NextSuica,pos,this.transform.rotation,this.transform.parent);
+            GameObject nextSuica=Instantiate(this.NextSuica,pos+this.transform.rotation*this.NextSuica.transform.position,this.transform.rotation*this.NextSuica.transform.rotation,this.transform.parent);
         }
     }
 }
