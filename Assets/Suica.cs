@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class Suica : MonoBehaviour
@@ -11,20 +12,14 @@ public class Suica : MonoBehaviour
     public GameObject NextSuica{get;private set;}
     [SerializeField]
     private int score=1;
-    [System.NonSerialized]
-    public bool ripe=false;
-    private GameObject OtherObject=null;
     private GameManager gameManager;
 
-    public bool isOtherObjectNull(){
-        return this.OtherObject==null;
-    }
+    public Guid guid{get;private set;}
+
     void Start()
     {
+        guid=Guid.NewGuid();
         gameManager=GameObject.Find("GameManager").GetComponent<GameManager>();
-
-        ripe=false;
-        OtherObject=null;
     }
 
     void Update()
@@ -41,22 +36,21 @@ public class Suica : MonoBehaviour
         Suica otherSuica;
         if(collisionInfo.gameObject.TryGetComponent<Suica>(out otherSuica)){
             if(otherSuica.getSize()==this.size){
-                if((this.isOtherObjectNull()&&otherSuica.isOtherObjectNull())&&!(this.ripe||otherSuica.ripe)){
-                    this.OtherObject=collisionInfo.gameObject;
-                    this.ripe=true;
-                    otherSuica.ripe=true;
-                    GenNextSuica((this.OtherObject.transform.position-this.transform.position)/2+this.transform.position);
+                if(0<otherSuica.guid.CompareTo(this.guid)){
+                    GenNextSuica((otherSuica.transform.position-this.transform.position)/2+this.transform.position);
                     gameManager.addScore(this.score);
-                    Destroy(this.OtherObject);
+                    Destroy(otherSuica.gameObject);
                     Destroy(this.gameObject);
                 }
             }
         }
     }
 
-    void GenNextSuica(Vector3 pos){
+    GameObject GenNextSuica(Vector3 pos){
         if(this.NextSuica!=null){
             GameObject nextSuica=Instantiate(this.NextSuica,pos+this.transform.rotation*this.NextSuica.transform.position,this.transform.rotation*this.NextSuica.transform.rotation,this.transform.parent);
+            return nextSuica;
         }
+        return null;
     }
 }
