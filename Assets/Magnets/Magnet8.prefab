@@ -102,7 +102,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   size: 8
   <NextSuica>k__BackingField: {fileID: 2379321665852681585, guid: d82c6491261c3254bbb36659eef82de1, type: 3}
-  score: 64
+  score: 36
 --- !u!114 &-238816552078871623
 MonoBehaviour:
   m_ObjectHideFlags: 0

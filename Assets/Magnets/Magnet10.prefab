@@ -148,8 +148,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   size: 10
-  NextSuica: {fileID: 0}
-  score: 128
+  <NextSuica>k__BackingField: {fileID: 0}
+  score: 55
 --- !u!114 &452111363317940164
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -102,7 +102,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   size: 4
   <NextSuica>k__BackingField: {fileID: 3472060052740575906, guid: 304eac9c7860f6949bb6eb3f72aab439, type: 3}
-  score: 40
+  score: 10
 --- !u!50 &4212014712553108276
 Rigidbody2D:
   serializedVersion: 4

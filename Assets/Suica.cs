@@ -13,10 +13,11 @@ public class Suica : MonoBehaviour
     [SerializeField]
     private int score=1;
     private GameManager gameManager;
-
+    [field:SerializeField]
     public Guid guid{get;private set;}
+    private bool ripe=false;
 
-    void Start()
+    void Awake()
     {
         guid=Guid.NewGuid();
         gameManager=GameObject.Find("GameManager").GetComponent<GameManager>();
@@ -35,8 +36,10 @@ public class Suica : MonoBehaviour
     {
         Suica otherSuica;
         if(collisionInfo.gameObject.TryGetComponent<Suica>(out otherSuica)){
-            if(otherSuica.getSize()==this.size){
+            if(otherSuica.getSize()==this.size&&!(this.ripe||otherSuica.ripe)){
                 if(0<otherSuica.guid.CompareTo(this.guid)){
+                    this.ripe=true;
+                    otherSuica.ripe=true;
                     GenNextSuica((otherSuica.transform.position-this.transform.position)/2+this.transform.position);
                     gameManager.addScore(this.score);
                     Destroy(otherSuica.gameObject);

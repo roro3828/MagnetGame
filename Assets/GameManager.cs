@@ -1,8 +1,11 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.IO;
+using System.Text;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 using UnityEngine.U2D;
 
@@ -40,6 +43,8 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private TMP_Text Scoretext;
     [SerializeField]
+    private TMP_Text HighScore;
+    [SerializeField]
     private TMP_Text Timetext;
     private float TimeOffset=0f;
     public int addScore(int score){
@@ -52,8 +57,10 @@ public class GameManager : MonoBehaviour
     {
         maininput.Disable();
     }
-    void Start()
+    void Awake()
     {
+        StartCoroutine(GetData("https://app.roro.icu"));
+
         TimeOffset=Time.time;
         Cursor.visible=false;
         maininput=new MainInput();
@@ -174,8 +181,78 @@ public class GameManager : MonoBehaviour
     }
 
     public void GameOver(){
+        StartCoroutine(PostData("https://app.roro.icu",this.Score));
         isPaused=true;
         gameState=GameState.GameOver;
         Debug.Log("GameOver");
+    }
+
+    private static string ReadText(string path)
+    {
+        try{
+            FileStream fs=new FileStream(path,FileMode.Open,FileAccess.Read,FileShare.ReadWrite);
+            StreamReader reader=new StreamReader(fs,Encoding.UTF8);
+            string textContent=reader.ReadToEnd();
+            fs.Close();
+            return textContent;
+        }
+        catch{
+            return null;
+        }
+    }
+    private static void WriteText(string path,string text)
+    {
+        StreamWriter fs=new StreamWriter(path,false,Encoding.UTF8);
+        fs.Write(text);
+        fs.Close();
+    }
+
+    void ShowHighScore(int[] scores){
+
+        string text="HighScore\n";
+        Array.Sort<int>(scores);
+        Array.Reverse<int>(scores);
+        for(int i=0;i<scores.Length;i++){
+            text+=scores[i].ToString()+"\n";
+        }
+
+        HighScore.text=text;
+    }
+
+    IEnumerator GetData(string url)
+    {
+        UnityWebRequest req = UnityWebRequest.Get(url);
+        yield return req.SendWebRequest();
+
+        if (req.result == UnityWebRequest.Result.ConnectionError || req.result == UnityWebRequest.Result.ProtocolError)
+        {
+            Debug.Log(req.error);
+        }
+        else if (req.responseCode == 200)
+        {
+            string[] json=req.downloadHandler.text.Replace("[","").Replace("]","").Split(",");
+            List<int> scores=new List<int>();
+            for(int i=0;i<json.Length;i++){
+                scores.Add(int.Parse(json[i]));
+            }
+            int[] s=scores.ToArray();
+            ShowHighScore(s);
+        }
+    }
+
+    IEnumerator PostData(string url,int score)
+    {
+        UnityWebRequest req = UnityWebRequest.Post(url,score.ToString());
+        req.SetRequestHeader("token", "%token here%");
+        yield return req.SendWebRequest();
+
+        if (req.result == UnityWebRequest.Result.ConnectionError || req.result == UnityWebRequest.Result.ProtocolError)
+        {
+            Debug.Log(req.error);
+        }
+        else if (req.responseCode == 200)
+        {
+            Debug.Log(req.downloadHandler.text);
+        }
     }
 }
