@@ -21,7 +21,8 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private GameObject[] Suicas;
     [SerializeField]
-    private GameObject Dropper;
+    private Transform Dropper;
+    private Transform DropPoint;
     [SerializeField]
     private float movelimit=10f;
     [SerializeField]
@@ -59,6 +60,8 @@ public class GameManager : MonoBehaviour
     }
     void Awake()
     {
+
+        DropPoint=Dropper.Find("DropPoint");
         StartCoroutine(GetData("https://app.roro.icu"));
 
         TimeOffset=Time.time;
@@ -84,7 +87,7 @@ public class GameManager : MonoBehaviour
         }
 
         nextSuica[len]=Suicas[UnityEngine.Random.Range(0,Suicas.Length)];
-        DisplaySuica[0]=DisplayObject(nextSuica[0],Dropper.transform);
+        DisplaySuica[0]=DisplayObject(nextSuica[0],DropPoint);
 
         for(int i=1;i<len+1;i++){
             DisplaySuica[i]=DisplayObject(nextSuica[i],SuicaDisplayTransform[i-1]);
@@ -106,7 +109,7 @@ public class GameManager : MonoBehaviour
 
     void Drop(){
         Destroy(DisplaySuica[0]);
-        Instantiate(nextSuica[0],Dropper.transform.position+Dropper.transform.rotation*nextSuica[0].transform.position,Dropper.transform.rotation*nextSuica[0].transform.rotation,this.transform);
+        Instantiate(nextSuica[0],DropPoint.position+DropPoint.rotation*nextSuica[0].transform.position,DropPoint.rotation*nextSuica[0].transform.rotation,this.transform);
     }
 
     private string getTime(){
@@ -136,14 +139,14 @@ public class GameManager : MonoBehaviour
     }
 
     void MoveDropper(){
-        Vector2 pos=Dropper.transform.position;
+        Vector2 pos=Dropper.position;
         float input=maininput.Main.Move.ReadValue<float>();
         pos+=new Vector2(input*Time.deltaTime*DropperSpeed,0);
         if(-movelimit<=pos.x&&pos.x<=movelimit){
-            Dropper.transform.position=pos;
+            Dropper.position=pos;
         }
         float r=maininput.Main.Turn.ReadValue<float>()*Time.deltaTime*60;
-        Dropper.transform.Rotate(0,0,-r);
+        DropPoint.Rotate(0,0,-r);
 
         if(0<maininput.Main.Drop.ReadValue<float>() && Waiting){
             Waiting=false;
@@ -243,7 +246,7 @@ public class GameManager : MonoBehaviour
     IEnumerator PostData(string url,int score)
     {
         UnityWebRequest req = UnityWebRequest.Post(url,score.ToString());
-        req.SetRequestHeader("token", "%token here%");
+        req.SetRequestHeader("token", "");
         yield return req.SendWebRequest();
 
         if (req.result == UnityWebRequest.Result.ConnectionError || req.result == UnityWebRequest.Result.ProtocolError)
