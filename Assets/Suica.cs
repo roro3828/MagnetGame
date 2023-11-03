@@ -56,4 +56,7 @@ public class Suica : MonoBehaviour
         }
         return null;
     }
+    public void DestorySelf(){
+        Destroy(this.gameObject);
+    }
 }

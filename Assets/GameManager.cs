@@ -5,6 +5,7 @@ using System.IO;
 using System.Text;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 using UnityEngine.U2D;
@@ -15,9 +16,12 @@ public class GameManager : MonoBehaviour
     public enum GameState{
         GameMain,
         Menu,
-        GameOver
+        GameOver,
+        Title
     };
-    public GameState gameState{get;private set;}=GameState.GameMain;
+    [SerializeField]
+    private GameState gameState=GameState.GameMain;
+    public GameState games{get{return gameState;}private set{gameState=games;}}
     [SerializeField]
     private GameObject[] Suicas;
     [SerializeField]
@@ -48,6 +52,11 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private TMP_Text Timetext;
     private float TimeOffset=0f;
+
+    [SerializeField]
+    private GameObject Menu;
+
+    private string HIGHSCOREURL="https://app.roro.icu";
     public int addScore(int score){
         this.Score+=score;
         return this.Score;
@@ -60,24 +69,25 @@ public class GameManager : MonoBehaviour
     }
     void Awake()
     {
-
         DropPoint=Dropper.Find("DropPoint");
-        StartCoroutine(GetData("https://app.roro.icu"));
-
-        TimeOffset=Time.time;
         Cursor.visible=false;
         maininput=new MainInput();
         maininput.Enable();
-
+        
         int len=SuicaDisplayTransform.Length;
         nextSuica=new GameObject[len+1];
         DisplaySuica=new GameObject[len+1];
-
         for(int i=1;i<len+1;i++){
             nextSuica[i]=Suicas[0];
         }
-
         ShowNext();
+
+        if(gameState==GameState.GameMain){
+            StartCoroutine(GetData());
+            TimeOffset=Time.time;
+            maininput.Main.Drop.performed+=DropCallBack;
+            maininput.Main.Menu.performed+=OpenMenuCallBack;
+        }
     }
     void ShowNext(){
         int len=SuicaDisplayTransform.Length;
@@ -107,9 +117,18 @@ public class GameManager : MonoBehaviour
         return instant;
     }
 
+    void DropCallBack(InputAction.CallbackContext context){
+        if(gameState==GameState.GameMain&&context.performed){
+            Drop();
+        }
+    }
     void Drop(){
-        Destroy(DisplaySuica[0]);
-        Instantiate(nextSuica[0],DropPoint.position+DropPoint.rotation*nextSuica[0].transform.position,DropPoint.rotation*nextSuica[0].transform.rotation,this.transform);
+        if(Waiting){
+            Destroy(DisplaySuica[0]);
+            Instantiate(nextSuica[0],DropPoint.position+DropPoint.rotation*nextSuica[0].transform.position,DropPoint.rotation*nextSuica[0].transform.rotation,this.transform);
+            Waiting=false;
+            StartCoroutine(Wait());
+        }
     }
 
     private string getTime(){
@@ -122,37 +141,31 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-
-        Scoretext.text=Score.ToString();
-        Timetext.text=getTime();
+        if(gameState==GameState.GameMain){
+            Scoretext.text=Score.ToString();
+            Timetext.text=getTime();
+            MoveDropper(maininput.Main.Move.ReadValue<float>());
+        }
+        else if(gameState==GameState.Title){
+            MoveDropper((Mathf.Sin(Time.time)+Mathf.Sin(Time.time*5))/2);
+            Drop();
+        }
         if(isPaused){
             Time.timeScale=0;
         }
         else{
             Time.timeScale=1;
-            MoveDropper();
-        }
-
-        if(0<maininput.Main.Menu.ReadValue<float>()){
-            SceneManager.LoadScene("MainGame");
         }
     }
 
-    void MoveDropper(){
+    void MoveDropper(float input){
         Vector2 pos=Dropper.position;
-        float input=maininput.Main.Move.ReadValue<float>();
         pos+=new Vector2(input*Time.deltaTime*DropperSpeed,0);
         if(-movelimit<=pos.x&&pos.x<=movelimit){
             Dropper.position=pos;
         }
         float r=maininput.Main.Turn.ReadValue<float>()*Time.deltaTime*60;
         DropPoint.Rotate(0,0,-r);
-
-        if(0<maininput.Main.Drop.ReadValue<float>() && Waiting){
-            Waiting=false;
-            Drop();
-            StartCoroutine(Wait());
-        }
     }
 
     IEnumerator Wait(){
@@ -162,6 +175,24 @@ public class GameManager : MonoBehaviour
         }
         ShowNext();
         Waiting=true;
+    }
+
+    void OpenMenuCallBack(InputAction.CallbackContext context){
+        if((gameState==GameState.GameMain||gameState==GameState.Menu)&&context.performed){
+            OpenMenu();
+        }
+    }
+    public void OpenMenu(){
+        if(gameState==GameState.GameMain){
+            isPaused=true;
+            gameState=GameState.Menu;
+            Menu.SetActive(true);
+        }
+        else if(gameState==GameState.Menu){
+            isPaused=false;
+            gameState=GameState.GameMain;
+            Menu.SetActive(false);
+        }
     }
 
     public bool isInArea(Vector2 pos){
@@ -184,10 +215,21 @@ public class GameManager : MonoBehaviour
     }
 
     public void GameOver(){
-        StartCoroutine(PostData("https://app.roro.icu",this.Score));
-        isPaused=true;
-        gameState=GameState.GameOver;
-        Debug.Log("GameOver");
+        if(gameState==GameState.GameMain){
+            StartCoroutine(PostData(this.Score));
+            isPaused=true;
+            gameState=GameState.GameOver;
+            Debug.Log("GameOver");
+        }
+        else if(gameState==GameState.Title){
+            DeleteAllSuica();
+        }
+    }
+    private void DeleteAllSuica(){
+        Suica[] allSuica=this.GetComponentsInChildren<Suica>();
+        for(int i=0;i<allSuica.Length;i++){
+            allSuica[i].DestorySelf();
+        }
     }
 
     private static string ReadText(string path)
@@ -222,9 +264,9 @@ public class GameManager : MonoBehaviour
         HighScore.text=text;
     }
 
-    IEnumerator GetData(string url)
+    IEnumerator GetData()
     {
-        UnityWebRequest req = UnityWebRequest.Get(url);
+        UnityWebRequest req = UnityWebRequest.Get(HIGHSCOREURL);
         yield return req.SendWebRequest();
 
         if (req.result == UnityWebRequest.Result.ConnectionError || req.result == UnityWebRequest.Result.ProtocolError)
@@ -243,10 +285,10 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    IEnumerator PostData(string url,int score)
+    IEnumerator PostData(int score)
     {
-        UnityWebRequest req = UnityWebRequest.Post(url,score.ToString());
-        req.SetRequestHeader("token", "");
+        UnityWebRequest req = UnityWebRequest.Post(HIGHSCOREURL,score.ToString());
+        req.SetRequestHeader("token", "jfdskklajkfdsjklkldsfaljkdfsklfewnhiowiohwghiowghewghewghioewvioijoevjioewgojiwevojiewvowbe");
         yield return req.SendWebRequest();
 
         if (req.result == UnityWebRequest.Result.ConnectionError || req.result == UnityWebRequest.Result.ProtocolError)
@@ -256,6 +298,23 @@ public class GameManager : MonoBehaviour
         else if (req.responseCode == 200)
         {
             Debug.Log(req.downloadHandler.text);
+        }
+    }
+
+    public void StartGame(){
+        SceneManager.LoadScene("MainGame");
+    }
+
+    public void QuitGame(){
+        if(gameState==GameState.Title){
+            #if UNITY_EDITOR
+                UnityEditor.EditorApplication.isPlaying = false;
+            #else
+                Application.Quit();
+            #endif
+        }
+        else{
+            SceneManager.LoadScene("StartMenu");
         }
     }
 }
