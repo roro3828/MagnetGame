@@ -288,7 +288,7 @@ public class GameManager : MonoBehaviour
     IEnumerator PostData(int score)
     {
         UnityWebRequest req = UnityWebRequest.Post(HIGHSCOREURL,score.ToString());
-        req.SetRequestHeader("token", "jfdskklajkfdsjklkldsfaljkdfsklfewnhiowiohwghiowghewghewghioewvioijoevjioewgojiwevojiewvowbe");
+        req.SetRequestHeader("token", "");
         yield return req.SendWebRequest();
 
         if (req.result == UnityWebRequest.Result.ConnectionError || req.result == UnityWebRequest.Result.ProtocolError)

@@ -8,6 +8,6 @@ public class Info : MonoBehaviour
     private TMP_Text version;
     void Start()
     {
-        version.text="ver."+PlayerSettings.bundleVersion;
+        version.text="ver."+Application.version;
     }
 }
