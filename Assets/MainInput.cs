@@ -165,6 +165,39 @@ public partial class @MainInput : IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": true
                 },
                 {
+                    ""name"": ""GamePadALT"",
+                    ""id"": ""759a9cb1-e7ee-4e90-a014-98b6333ed79e"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""ca4917ff-b3ec-44ad-a04d-a3239a9b659b"",
+                    ""path"": ""<Gamepad>/dpad/left"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""12cfc6eb-f589-4b87-aa4b-f2bc3b166025"",
+                    ""path"": ""<Gamepad>/dpad/right"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
                     ""name"": """",
                     ""id"": ""0c660432-723f-4e33-bce9-2c6ce678f7f1"",
                     ""path"": ""<Keyboard>/space"",
@@ -296,6 +329,15 @@ public partial class @MainInput : IInputActionCollection2, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": ""Press"",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ANY"",
+                    ""type"": ""Button"",
+                    ""id"": ""b53cf610-9184-45eb-9fcb-92223c8fa309"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
                     ""initialStateCheck"": false
                 }
             ],
@@ -453,6 +495,28 @@ public partial class @MainInput : IInputActionCollection2, IDisposable
                     ""action"": ""MOVE"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3d84c5f3-437b-4071-86ac-ef4e762aa5f8"",
+                    ""path"": ""<Keyboard>/anyKey"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ANY"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""787ae4ce-cf4f-4484-9037-bb69becec494"",
+                    ""path"": ""<Gamepad>/<Button>"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ANY"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -469,6 +533,7 @@ public partial class @MainInput : IInputActionCollection2, IDisposable
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_MOVE = m_UI.FindAction("MOVE", throwIfNotFound: true);
         m_UI_Select = m_UI.FindAction("Select", throwIfNotFound: true);
+        m_UI_ANY = m_UI.FindAction("ANY", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -587,12 +652,14 @@ public partial class @MainInput : IInputActionCollection2, IDisposable
     private IUIActions m_UIActionsCallbackInterface;
     private readonly InputAction m_UI_MOVE;
     private readonly InputAction m_UI_Select;
+    private readonly InputAction m_UI_ANY;
     public struct UIActions
     {
         private @MainInput m_Wrapper;
         public UIActions(@MainInput wrapper) { m_Wrapper = wrapper; }
         public InputAction @MOVE => m_Wrapper.m_UI_MOVE;
         public InputAction @Select => m_Wrapper.m_UI_Select;
+        public InputAction @ANY => m_Wrapper.m_UI_ANY;
         public InputActionMap Get() { return m_Wrapper.m_UI; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -608,6 +675,9 @@ public partial class @MainInput : IInputActionCollection2, IDisposable
                 @Select.started -= m_Wrapper.m_UIActionsCallbackInterface.OnSelect;
                 @Select.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnSelect;
                 @Select.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnSelect;
+                @ANY.started -= m_Wrapper.m_UIActionsCallbackInterface.OnANY;
+                @ANY.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnANY;
+                @ANY.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnANY;
             }
             m_Wrapper.m_UIActionsCallbackInterface = instance;
             if (instance != null)
@@ -618,6 +688,9 @@ public partial class @MainInput : IInputActionCollection2, IDisposable
                 @Select.started += instance.OnSelect;
                 @Select.performed += instance.OnSelect;
                 @Select.canceled += instance.OnSelect;
+                @ANY.started += instance.OnANY;
+                @ANY.performed += instance.OnANY;
+                @ANY.canceled += instance.OnANY;
             }
         }
     }
@@ -633,5 +706,6 @@ public partial class @MainInput : IInputActionCollection2, IDisposable
     {
         void OnMOVE(InputAction.CallbackContext context);
         void OnSelect(InputAction.CallbackContext context);
+        void OnANY(InputAction.CallbackContext context);
     }
 }

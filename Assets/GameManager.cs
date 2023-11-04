@@ -55,6 +55,10 @@ public class GameManager : MonoBehaviour
 
     [SerializeField]
     private GameObject Menu;
+    [SerializeField]
+    private GameObject ResultPanel;
+    [SerializeField]
+    private TMP_Text ResultScore;
 
     private string HIGHSCOREURL="https://app.roro.icu";
     public int addScore(int score){
@@ -87,6 +91,7 @@ public class GameManager : MonoBehaviour
             TimeOffset=Time.time;
             maininput.Main.Drop.performed+=DropCallBack;
             maininput.Main.Menu.performed+=OpenMenuCallBack;
+            maininput.UI.ANY.performed+=PressAny;
         }
     }
     void ShowNext(){
@@ -214,12 +219,20 @@ public class GameManager : MonoBehaviour
         return x&&y;
     }
 
+    public void PressAny(InputAction.CallbackContext context){
+        if(context.performed&&gameState==GameState.GameOver){
+            StartGame();
+        }
+    }
     public void GameOver(){
         if(gameState==GameState.GameMain){
             StartCoroutine(PostData(this.Score));
             isPaused=true;
             gameState=GameState.GameOver;
             Debug.Log("GameOver");
+
+            ResultPanel.SetActive(true);
+            ResultScore.text=Score.ToString();
         }
         else if(gameState==GameState.Title){
             DeleteAllSuica();
