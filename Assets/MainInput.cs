@@ -299,7 +299,7 @@ public partial class @MainInput : IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""1064b285-fa92-40af-a270-eebf44ce3324"",
-                    ""path"": ""<Gamepad>/select"",
+                    ""path"": ""<Gamepad>/start"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",

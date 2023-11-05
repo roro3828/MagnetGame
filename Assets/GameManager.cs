@@ -31,8 +31,6 @@ public class GameManager : MonoBehaviour
     private float movelimit=10f;
     [SerializeField]
     private float DropperSpeed=1f;
-    [SerializeField]
-    private float interval=1f;
 
     [SerializeField]
     private Vector2Int GameAreaStart=new Vector2Int(-1,-1);
@@ -59,6 +57,12 @@ public class GameManager : MonoBehaviour
     private GameObject ResultPanel;
     [SerializeField]
     private TMP_Text ResultScore;
+    public class GameConfig{
+        public int TimeLimit=0;
+        public float MagneticAMP=1f;
+        public float DropInterval=1f;
+    }
+    public GameConfig config{get;private set;}
 
     private string HIGHSCOREURL="https://app.roro.icu";
     public int addScore(int score){
@@ -93,6 +97,8 @@ public class GameManager : MonoBehaviour
             maininput.Main.Menu.performed+=OpenMenuCallBack;
             maininput.UI.ANY.performed+=PressAny;
         }
+
+        readConfig();
     }
     void ShowNext(){
         int len=SuicaDisplayTransform.Length;
@@ -138,6 +144,12 @@ public class GameManager : MonoBehaviour
 
     private string getTime(){
         int time=(int)(Time.time-TimeOffset);
+        if(0<config.TimeLimit){
+            time=config.TimeLimit-time;
+            if(time<=0){
+                GameOver();
+            }
+        }
         int h=time/3600;
         int m=time%3600/60;
         int s=time%60;
@@ -174,7 +186,7 @@ public class GameManager : MonoBehaviour
     }
 
     IEnumerator Wait(){
-        yield return new WaitForSeconds(interval);
+        yield return new WaitForSeconds(config.DropInterval);
         for(int i=1;i<SuicaDisplayTransform.Length+1;i++){
             Destroy(DisplaySuica[i]);
         }
@@ -245,7 +257,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private static string ReadText(string path)
+    public static string ReadText(string path)
     {
         try{
             FileStream fs=new FileStream(path,FileMode.Open,FileAccess.Read,FileShare.ReadWrite);
@@ -258,7 +270,7 @@ public class GameManager : MonoBehaviour
             return null;
         }
     }
-    private static void WriteText(string path,string text)
+    public static void WriteText(string path,string text)
     {
         StreamWriter fs=new StreamWriter(path,false,Encoding.UTF8);
         fs.Write(text);
@@ -280,6 +292,7 @@ public class GameManager : MonoBehaviour
     IEnumerator GetData()
     {
         UnityWebRequest req = UnityWebRequest.Get(HIGHSCOREURL);
+        req.timeout=5;
         yield return req.SendWebRequest();
 
         if (req.result == UnityWebRequest.Result.ConnectionError || req.result == UnityWebRequest.Result.ProtocolError)
@@ -301,6 +314,7 @@ public class GameManager : MonoBehaviour
     IEnumerator PostData(int score)
     {
         UnityWebRequest req = UnityWebRequest.Post(HIGHSCOREURL,score.ToString());
+        req.timeout=5;
         req.SetRequestHeader("token", "");
         yield return req.SendWebRequest();
 
@@ -329,5 +343,19 @@ public class GameManager : MonoBehaviour
         else{
             SceneManager.LoadScene("StartMenu");
         }
+    }
+
+    public void readConfig(){
+        string rawdata=ReadText("config.json");
+        if(rawdata==null){
+            config=new GameConfig();
+            WriteText("config.json",JsonUtility.ToJson(config,true));
+        }
+        else{
+            config=JsonUtility.FromJson<GameConfig>(rawdata);
+        }
+    }
+    public void writeConfig(){
+        WriteText("config.json",JsonUtility.ToJson(config,true));
     }
 }

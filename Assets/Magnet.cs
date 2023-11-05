@@ -17,40 +17,21 @@ public class Magnet : MonoBehaviour
     public Vector3 getPos(){
         return this.gameObject.transform.position;
     }
-    [SerializeField]
-    private bool magnetic=false;
     private GameManager gameManager;
 
     void Start()
     {
         gameManager=GameObject.Find("GameManager").GetComponent<GameManager>();
-        if(magnetic){
-            for(int i=0;i<MagneticPoles.Length;i++){
-                MagneticPoles[i].m=0;
-            }
+        for(int i=0;i<MagneticPoles.Length;i++){
+            MagneticPoles[i].m*=gameManager.config.MagneticAMP;
         }
+
     }
 
     void Update()
     {
         if(gameManager.isPaused){
             return;
-        }
-        if(magnetic){
-            MagneticPole[] mp=GetAllPoles();
-            
-            for(int i=0;i<this.MagneticPoles.Length;i++){
-                float F=0f;
-                for(int j=0;j<mp.Length;j++){
-                    Vector3 vec=this.MagneticPoles[i].transform.position-mp[j].transform.position;
-                    if(0.01f<vec.magnitude){
-                        float f=((mp[j].m)/(vec.magnitude*vec.magnitude+1));
-                        F+=f;
-                    }
-                }
-                //F=F/(float)(16*Math.PI*Math.PI*0.0000001);
-                this.MagneticPoles[i].m=-F;
-            }
         }
 
         Rigidbody2D rig;
