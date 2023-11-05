@@ -494,7 +494,6 @@ MonoBehaviour:
     m: 500
   - transform: {fileID: 1559961702}
     m: -500
-  magnetic: 0
 --- !u!61 &498646078
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1218,7 +1217,6 @@ MonoBehaviour:
   Dropper: {fileID: 1591122112}
   movelimit: 8.5
   DropperSpeed: 10
-  interval: 1
   GameAreaStart: {x: -20, y: -20}
   GameAreaEnd: {x: 20, y: 30}
   SuicaDisplayTransform:
@@ -1227,6 +1225,8 @@ MonoBehaviour:
   HighScore: {fileID: 0}
   Timetext: {fileID: 0}
   Menu: {fileID: 0}
+  ResultPanel: {fileID: 0}
+  ResultScore: {fileID: 0}
 --- !u!4 &1696256593
 Transform:
   m_ObjectHideFlags: 0
@@ -1304,7 +1304,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Neodymium GAME
+  m_text: 'Magnet
+
+    GAME'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1430,7 +1432,6 @@ MonoBehaviour:
   MagneticPoles:
   - transform: {fileID: 1798262328}
     m: -5000
-  magnetic: 0
 --- !u!61 &1798262330
 BoxCollider2D:
   m_ObjectHideFlags: 0
