@@ -19,6 +19,9 @@ public class Magnet : MonoBehaviour
     }
     private GameManager gameManager;
 
+    [field:SerializeField]
+    public bool Attract_Other{get;private set;}=true;
+
     void Start()
     {
         gameManager=GameObject.Find("GameManager").GetComponent<GameManager>();
@@ -59,8 +62,10 @@ public class Magnet : MonoBehaviour
         for(int i=0;i<ms.Length;i++){
 
             if(ms[i]!=this){
-                for(int j=0;j<ms[i].MagneticPoles.Length;j++){
-                    poles.Add(ms[i].MagneticPoles[j]);
+                if(ms[i].Attract_Other){
+                    for(int j=0;j<ms[i].MagneticPoles.Length;j++){
+                        poles.Add(ms[i].MagneticPoles[j]);
+                    }
                 }
             }
 

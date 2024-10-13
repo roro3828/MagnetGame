@@ -17,6 +17,9 @@ public class Suica : MonoBehaviour
     public Guid guid{get;private set;}
     private bool ripe=false;
 
+    [SerializeField]
+    private AudioClip MergeSE;
+
     void Awake()
     {
         guid=Guid.NewGuid();
@@ -36,11 +39,14 @@ public class Suica : MonoBehaviour
     {
         Suica otherSuica;
         if(collisionInfo.gameObject.TryGetComponent<Suica>(out otherSuica)){
+            //ぶつかったスイカと同じ大きさかつ両方とも処理中でない場合
             if(otherSuica.getSize()==this.size&&!(this.ripe||otherSuica.ripe)){
+                //ぶつかったスイカよりuidが大きい場合
                 if(0<otherSuica.guid.CompareTo(this.guid)){
                     this.ripe=true;
                     otherSuica.ripe=true;
                     GenNextSuica((otherSuica.transform.position-this.transform.position)/2+this.transform.position);
+                    PlaySE((otherSuica.transform.position-this.transform.position)/2+this.transform.position);
                     gameManager.addScore(this.score);
                     Destroy(otherSuica.gameObject);
                     Destroy(this.gameObject);
@@ -56,7 +62,16 @@ public class Suica : MonoBehaviour
         }
         return null;
     }
-    public void DestorySelf(){
+
+    public void DestroySelf(){
         Destroy(this.gameObject);
+    }
+    void PlaySE(Vector3 pos){
+        if(MergeSE!=null){
+            GameObject audio=new GameObject("SuicaAudioSource",typeof(AudioSource));
+            audio.transform.position=pos;
+            audio.GetComponent<AudioSource>().PlayOneShot(MergeSE);
+            Destroy(audio,2f);
+        }
     }
 }

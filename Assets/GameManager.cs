@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Networking;
@@ -57,6 +58,10 @@ public class GameManager : MonoBehaviour
     private GameObject ResultPanel;
     [SerializeField]
     private TMP_Text ResultScore;
+
+    [SerializeField]
+    private AudioSource SE;
+
     public class GameConfig{
         public int TimeLimit=0;
         public float MagneticAMP=1f;
@@ -120,6 +125,14 @@ public class GameManager : MonoBehaviour
     }
     public static GameObject DisplayObject(GameObject original,Transform parent,Vector3 pos){
         GameObject instant=Instantiate(original,pos+parent.position+parent.rotation*original.transform.position,parent.rotation*original.transform.rotation ,parent);
+        for(int i=0;i<instant.transform.childCount;i++){
+            GameObject child=instant.transform.GetChild(i).gameObject;
+            foreach(Component c in child.GetComponents<Component>()){
+                if(!(c is Transform)&&!(c is MeshRenderer)&&!(c is SpriteRenderer)&&!(c is SpriteShapeRenderer)&&!(c is SpriteShapeController)){
+                    Destroy(c);
+                }
+            }
+        }
         foreach(Component c in instant.GetComponents<Component>()){
             if(!(c is Transform)&&!(c is MeshRenderer)&&!(c is SpriteRenderer)&&!(c is SpriteShapeRenderer)&&!(c is SpriteShapeController)){
                 Destroy(c);
@@ -253,7 +266,7 @@ public class GameManager : MonoBehaviour
     private void DeleteAllSuica(){
         Suica[] allSuica=this.GetComponentsInChildren<Suica>();
         for(int i=0;i<allSuica.Length;i++){
-            allSuica[i].DestorySelf();
+            allSuica[i].DestroySelf();
         }
     }
 
@@ -313,7 +326,7 @@ public class GameManager : MonoBehaviour
 
     IEnumerator PostData(int score)
     {
-        UnityWebRequest req = UnityWebRequest.Post(HIGHSCOREURL,score.ToString());
+        UnityWebRequest req = UnityWebRequest.PostWwwForm(HIGHSCOREURL,score.ToString());
         req.timeout=5;
         req.SetRequestHeader("token", "");
         yield return req.SendWebRequest();
