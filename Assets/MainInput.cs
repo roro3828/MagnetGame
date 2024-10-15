@@ -62,6 +62,15 @@ public partial class @MainInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": ""Press(behavior=1)"",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""MoveByTouch"",
+                    ""type"": ""Value"",
+                    ""id"": ""3aa62fc2-0395-4a22-a295-d1b7acc04b10"",
+                    ""expectedControlType"": ""Touch"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -220,6 +229,17 @@ public partial class @MainInput: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 },
                 {
+                    ""name"": """",
+                    ""id"": ""770d76ec-679b-46fa-bd35-5ddf44f4ef49"",
+                    ""path"": ""<Touchscreen>/primaryTouch/tap"",
+                    ""interactions"": ""Tap"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Drop"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
                     ""name"": ""KeyBoard"",
                     ""id"": ""7a9fbbd2-7dce-4da7-b302-4f6b224383b7"",
                     ""path"": ""1DAxis"",
@@ -304,6 +324,17 @@ public partial class @MainInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Menu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c346a5ff-3129-494f-a7f4-9883ccfbb929"",
+                    ""path"": ""<Touchscreen>/primaryTouch"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MoveByTouch"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -529,6 +560,7 @@ public partial class @MainInput: IInputActionCollection2, IDisposable
         m_Main_Drop = m_Main.FindAction("Drop", throwIfNotFound: true);
         m_Main_Turn = m_Main.FindAction("Turn", throwIfNotFound: true);
         m_Main_Menu = m_Main.FindAction("Menu", throwIfNotFound: true);
+        m_Main_MoveByTouch = m_Main.FindAction("MoveByTouch", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_MOVE = m_UI.FindAction("MOVE", throwIfNotFound: true);
@@ -599,6 +631,7 @@ public partial class @MainInput: IInputActionCollection2, IDisposable
     private readonly InputAction m_Main_Drop;
     private readonly InputAction m_Main_Turn;
     private readonly InputAction m_Main_Menu;
+    private readonly InputAction m_Main_MoveByTouch;
     public struct MainActions
     {
         private @MainInput m_Wrapper;
@@ -607,6 +640,7 @@ public partial class @MainInput: IInputActionCollection2, IDisposable
         public InputAction @Drop => m_Wrapper.m_Main_Drop;
         public InputAction @Turn => m_Wrapper.m_Main_Turn;
         public InputAction @Menu => m_Wrapper.m_Main_Menu;
+        public InputAction @MoveByTouch => m_Wrapper.m_Main_MoveByTouch;
         public InputActionMap Get() { return m_Wrapper.m_Main; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -628,6 +662,9 @@ public partial class @MainInput: IInputActionCollection2, IDisposable
             @Menu.started += instance.OnMenu;
             @Menu.performed += instance.OnMenu;
             @Menu.canceled += instance.OnMenu;
+            @MoveByTouch.started += instance.OnMoveByTouch;
+            @MoveByTouch.performed += instance.OnMoveByTouch;
+            @MoveByTouch.canceled += instance.OnMoveByTouch;
         }
 
         private void UnregisterCallbacks(IMainActions instance)
@@ -644,6 +681,9 @@ public partial class @MainInput: IInputActionCollection2, IDisposable
             @Menu.started -= instance.OnMenu;
             @Menu.performed -= instance.OnMenu;
             @Menu.canceled -= instance.OnMenu;
+            @MoveByTouch.started -= instance.OnMoveByTouch;
+            @MoveByTouch.performed -= instance.OnMoveByTouch;
+            @MoveByTouch.canceled -= instance.OnMoveByTouch;
         }
 
         public void RemoveCallbacks(IMainActions instance)
@@ -729,6 +769,7 @@ public partial class @MainInput: IInputActionCollection2, IDisposable
         void OnDrop(InputAction.CallbackContext context);
         void OnTurn(InputAction.CallbackContext context);
         void OnMenu(InputAction.CallbackContext context);
+        void OnMoveByTouch(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

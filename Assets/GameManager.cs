@@ -7,6 +7,8 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Controls;
+using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 using UnityEngine.U2D;
@@ -101,6 +103,7 @@ public class GameManager : MonoBehaviour
             maininput.Main.Drop.performed+=DropCallBack;
             maininput.Main.Menu.performed+=OpenMenuCallBack;
             maininput.UI.ANY.performed+=PressAny;
+            maininput.Main.MoveByTouch.performed+=MoveByTouchCallBack;
         }
 
         readConfig();
@@ -196,6 +199,19 @@ public class GameManager : MonoBehaviour
         }
         float r=maininput.Main.Turn.ReadValue<float>()*Time.deltaTime*60;
         DropPoint.Rotate(0,0,-r);
+    }
+    void MoveByTouchCallBack(InputAction.CallbackContext context){
+        if(context.performed){
+            TouchState touchState=context.ReadValue<TouchState>();
+            Vector2 touchpos=touchState.position;
+            Vector2 worldpos=Camera.main.ScreenToWorldPoint(touchpos);
+            Vector2 pos=Dropper.position;
+            pos.x=worldpos.x;
+
+            if(-movelimit<=pos.x&&pos.x<=movelimit){
+                Dropper.position=pos;
+            }
+        }
     }
 
     IEnumerator Wait(){

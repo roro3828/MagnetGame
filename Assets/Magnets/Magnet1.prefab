@@ -100,7 +100,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4af53b7c1b7f3f441b484f602c495b5e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MagneticPoles:
+  <MagneticPoles>k__BackingField:
   - transform: {fileID: 2952358560870814814}
     m: 0.2
   <Attract_Other>k__BackingField: 1

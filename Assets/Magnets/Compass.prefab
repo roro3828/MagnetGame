@@ -102,7 +102,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   size: 7
-  <NextSuica>k__BackingField: {fileID: 8798729699660159032, guid: 28b6aa8d845e6b84199b0bf9ede24311, type: 3}
+  <NextSuica>k__BackingField: {fileID: 2318316693133614341, guid: 95a63675940db3d499ebb332dc145010, type: 3}
   score: 28
   MergeSE: {fileID: 8300000, guid: 0f7dcb73878cb05419ff0ee135762efa, type: 3}
 --- !u!233 &3374007753697325110
@@ -355,11 +355,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4af53b7c1b7f3f441b484f602c495b5e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MagneticPoles:
+  <MagneticPoles>k__BackingField:
   - transform: {fileID: 1240143049369990668}
-    m: -3
+    m: -2
   - transform: {fileID: 386367898994286463}
-    m: 3
+    m: -2
   <Attract_Other>k__BackingField: 1
 --- !u!61 &8137532993273616833
 BoxCollider2D:

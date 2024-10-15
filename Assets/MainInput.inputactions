@@ -40,6 +40,15 @@
                     "processors": "",
                     "interactions": "Press(behavior=1)",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "MoveByTouch",
+                    "type": "Value",
+                    "id": "3aa62fc2-0395-4a22-a295-d1b7acc04b10",
+                    "expectedControlType": "Touch",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -198,6 +207,17 @@
                     "isPartOfComposite": false
                 },
                 {
+                    "name": "",
+                    "id": "770d76ec-679b-46fa-bd35-5ddf44f4ef49",
+                    "path": "<Touchscreen>/primaryTouch/tap",
+                    "interactions": "Tap",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Drop",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
                     "name": "KeyBoard",
                     "id": "7a9fbbd2-7dce-4da7-b302-4f6b224383b7",
                     "path": "1DAxis",
@@ -282,6 +302,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Menu",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c346a5ff-3129-494f-a7f4-9883ccfbb929",
+                    "path": "<Touchscreen>/primaryTouch",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MoveByTouch",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

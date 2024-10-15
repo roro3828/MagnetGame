@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 4429560174850726385}
   - component: {fileID: 4429560174850726384}
   - component: {fileID: 4429560174850726383}
+  - component: {fileID: 5119787102305138007}
   - component: {fileID: 4429560174850726382}
   - component: {fileID: 4429560174850726381}
-  - component: {fileID: 5119787102305138007}
   m_Layer: 3
   m_Name: Magnet3
   m_TagString: Untagged
@@ -104,6 +104,22 @@ MonoBehaviour:
   <NextSuica>k__BackingField: {fileID: 4212014712553108278, guid: 2fd5be015fc633249ae2e44e0cabe100, type: 3}
   score: 6
   MergeSE: {fileID: 8300000, guid: 0f7dcb73878cb05419ff0ee135762efa, type: 3}
+--- !u!114 &5119787102305138007
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4429560174850726380}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4af53b7c1b7f3f441b484f602c495b5e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <MagneticPoles>k__BackingField:
+  - transform: {fileID: 4429560174850726385}
+    m: 0.5
+  <Attract_Other>k__BackingField: 1
 --- !u!50 &4429560174850726382
 Rigidbody2D:
   serializedVersion: 4
@@ -166,19 +182,3 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.5
---- !u!114 &5119787102305138007
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4429560174850726380}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4af53b7c1b7f3f441b484f602c495b5e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  MagneticPoles:
-  - transform: {fileID: 4429560174850726385}
-    m: 0.5
-  <Attract_Other>k__BackingField: 1

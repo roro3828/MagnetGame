@@ -11,13 +11,13 @@ public class Magnet : MonoBehaviour
         public float m=0.01f;
     }
 
-    [SerializeField]
-    private MagneticPole[] MagneticPoles;
+    [field:SerializeField]
+    public MagneticPole[] MagneticPoles{get;protected set;}
     private GameObject[] Magnets;
     public Vector3 getPos(){
         return this.gameObject.transform.position;
     }
-    private GameManager gameManager;
+    protected GameManager gameManager;
 
     [field:SerializeField]
     public bool Attract_Other{get;private set;}=true;
@@ -28,7 +28,6 @@ public class Magnet : MonoBehaviour
         for(int i=0;i<MagneticPoles.Length;i++){
             MagneticPoles[i].m*=gameManager.config.MagneticAMP;
         }
-
     }
 
     void Update()
