@@ -201,6 +201,9 @@ public class GameManager : MonoBehaviour
         DropPoint.Rotate(0,0,-r);
     }
     void MoveByTouchCallBack(InputAction.CallbackContext context){
+        if(gameState!=GameState.GameMain){
+            return;
+        }
         if(context.performed){
             TouchState touchState=context.ReadValue<TouchState>();
             Vector2 touchpos=touchState.position;

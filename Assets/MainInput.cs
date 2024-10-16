@@ -370,6 +370,24 @@ public partial class @MainInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""TOUCH"",
+                    ""type"": ""Value"",
+                    ""id"": ""17d889de-fe92-4bf9-98c9-bc54b2ba2c4e"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Tap"",
+                    ""type"": ""Button"",
+                    ""id"": ""ea935159-f64c-4e0c-9f08-db046f393aec"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -548,6 +566,50 @@ public partial class @MainInput: IInputActionCollection2, IDisposable
                     ""action"": ""ANY"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""28d7ccdc-5ff4-4d8d-a336-155f2d5a7b46"",
+                    ""path"": ""<Touchscreen>/primaryTouch/press"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ANY"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0be03658-5e46-44db-a044-b5b6e70e4ee9"",
+                    ""path"": ""<Touchscreen>/position"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""TOUCH"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1791618e-f8b6-4294-9937-10d48e73102c"",
+                    ""path"": ""<Mouse>/position"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""TOUCH"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2612a5f7-d274-4ee3-8e11-023ecf37bc88"",
+                    ""path"": ""<Touchscreen>/primaryTouch/tap"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Tap"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -566,6 +628,8 @@ public partial class @MainInput: IInputActionCollection2, IDisposable
         m_UI_MOVE = m_UI.FindAction("MOVE", throwIfNotFound: true);
         m_UI_Select = m_UI.FindAction("Select", throwIfNotFound: true);
         m_UI_ANY = m_UI.FindAction("ANY", throwIfNotFound: true);
+        m_UI_TOUCH = m_UI.FindAction("TOUCH", throwIfNotFound: true);
+        m_UI_Tap = m_UI.FindAction("Tap", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -708,6 +772,8 @@ public partial class @MainInput: IInputActionCollection2, IDisposable
     private readonly InputAction m_UI_MOVE;
     private readonly InputAction m_UI_Select;
     private readonly InputAction m_UI_ANY;
+    private readonly InputAction m_UI_TOUCH;
+    private readonly InputAction m_UI_Tap;
     public struct UIActions
     {
         private @MainInput m_Wrapper;
@@ -715,6 +781,8 @@ public partial class @MainInput: IInputActionCollection2, IDisposable
         public InputAction @MOVE => m_Wrapper.m_UI_MOVE;
         public InputAction @Select => m_Wrapper.m_UI_Select;
         public InputAction @ANY => m_Wrapper.m_UI_ANY;
+        public InputAction @TOUCH => m_Wrapper.m_UI_TOUCH;
+        public InputAction @Tap => m_Wrapper.m_UI_Tap;
         public InputActionMap Get() { return m_Wrapper.m_UI; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -733,6 +801,12 @@ public partial class @MainInput: IInputActionCollection2, IDisposable
             @ANY.started += instance.OnANY;
             @ANY.performed += instance.OnANY;
             @ANY.canceled += instance.OnANY;
+            @TOUCH.started += instance.OnTOUCH;
+            @TOUCH.performed += instance.OnTOUCH;
+            @TOUCH.canceled += instance.OnTOUCH;
+            @Tap.started += instance.OnTap;
+            @Tap.performed += instance.OnTap;
+            @Tap.canceled += instance.OnTap;
         }
 
         private void UnregisterCallbacks(IUIActions instance)
@@ -746,6 +820,12 @@ public partial class @MainInput: IInputActionCollection2, IDisposable
             @ANY.started -= instance.OnANY;
             @ANY.performed -= instance.OnANY;
             @ANY.canceled -= instance.OnANY;
+            @TOUCH.started -= instance.OnTOUCH;
+            @TOUCH.performed -= instance.OnTOUCH;
+            @TOUCH.canceled -= instance.OnTOUCH;
+            @Tap.started -= instance.OnTap;
+            @Tap.performed -= instance.OnTap;
+            @Tap.canceled -= instance.OnTap;
         }
 
         public void RemoveCallbacks(IUIActions instance)
@@ -776,5 +856,7 @@ public partial class @MainInput: IInputActionCollection2, IDisposable
         void OnMOVE(InputAction.CallbackContext context);
         void OnSelect(InputAction.CallbackContext context);
         void OnANY(InputAction.CallbackContext context);
+        void OnTOUCH(InputAction.CallbackContext context);
+        void OnTap(InputAction.CallbackContext context);
     }
 }
