@@ -359,8 +359,9 @@ MonoBehaviour:
   - transform: {fileID: 1240143049369990668}
     m: -2
   - transform: {fileID: 386367898994286463}
-    m: -2
+    m: 2
   <Attract_Other>k__BackingField: 1
+  <AttractByOther>k__BackingField: 1
 --- !u!61 &8137532993273616833
 BoxCollider2D:
   m_ObjectHideFlags: 0
