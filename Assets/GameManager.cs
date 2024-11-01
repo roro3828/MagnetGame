@@ -71,7 +71,7 @@ public class GameManager : MonoBehaviour
     }
     public GameConfig config{get;private set;}
 
-    private string HIGHSCOREURL="https://app.roro.icu";
+    private string HIGHSCOREURL="";
     public int addScore(int score){
         this.Score+=score;
         return this.Score;
@@ -322,9 +322,15 @@ public class GameManager : MonoBehaviour
         string text="HighScore\n";
         Array.Sort<int>(scores);
         Array.Reverse<int>(scores);
+
+        text=scores[0].ToString();
+
+        //一位のみ表示
+        /*
         for(int i=0;i<scores.Length;i++){
             text+=scores[i].ToString()+"\n";
         }
+        //*/
 
         HighScore.text=text;
     }
