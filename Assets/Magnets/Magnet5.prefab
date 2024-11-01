@@ -180,6 +180,7 @@ MonoBehaviour:
   - transform: {fileID: 6210005736094380652}
     m: 0.4
   <Attract_Other>k__BackingField: 1
+  <AttractByOther>k__BackingField: 1
 --- !u!114 &-1356105140696135946
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -196,6 +197,7 @@ MonoBehaviour:
   <NextSuica>k__BackingField: {fileID: 1341719124808075156, guid: dce388d4815bde64a9ed9789054a58d3, type: 3}
   score: 15
   MergeSE: {fileID: 8300000, guid: 0f7dcb73878cb05419ff0ee135762efa, type: 3}
+  <DisplayScale>k__BackingField: 2
 --- !u!1 &5178429433507197257
 GameObject:
   m_ObjectHideFlags: 0

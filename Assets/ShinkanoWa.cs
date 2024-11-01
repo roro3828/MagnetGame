@@ -29,7 +29,7 @@ public class ShinkanoWa : MonoBehaviour
                 tmp=Suicas[i].NextSuica.GetComponent<Suica>();
             }
 
-            GameManager.DisplayObject(Suicas[i].gameObject,this.transform,pos);
+            GameManager.DisplayObject(Suicas[i].gameObject,this.transform,pos,Suicas[i].DisplayScale);
             pos=ang*pos;
         }
     }

@@ -84,6 +84,13 @@ public class GameManager : MonoBehaviour
     }
     void Awake()
     {
+
+        float recio=(float)Screen.width/(float)Screen.height;
+        if(recio<=1.0f){
+            Camera.main.orthographicSize=18.0f;
+        }
+
+
         DropPoint=Dropper.Find("DropPoint");
         Cursor.visible=false;
         maininput=new MainInput();
@@ -124,10 +131,11 @@ public class GameManager : MonoBehaviour
     }
 
     public static GameObject DisplayObject(GameObject original,Transform parent){
-        return DisplayObject(original,parent,new Vector3(0,0,0));
+        return DisplayObject(original,parent,new Vector3(0,0,0),1f);
     }
-    public static GameObject DisplayObject(GameObject original,Transform parent,Vector3 pos){
+    public static GameObject DisplayObject(GameObject original,Transform parent,Vector3 pos,float scale){
         GameObject instant=Instantiate(original,pos+parent.position+parent.rotation*original.transform.position,parent.rotation*original.transform.rotation ,parent);
+        instant.transform.localScale*=scale;
         for(int i=0;i<instant.transform.childCount;i++){
             GameObject child=instant.transform.GetChild(i).gameObject;
             foreach(Component c in child.GetComponents<Component>()){

@@ -104,6 +104,7 @@ MonoBehaviour:
   <NextSuica>k__BackingField: {fileID: 2379321665852681585, guid: d82c6491261c3254bbb36659eef82de1, type: 3}
   score: 36
   MergeSE: {fileID: 8300000, guid: 0f7dcb73878cb05419ff0ee135762efa, type: 3}
+  <DisplayScale>k__BackingField: 1.3
 --- !u!114 &-238816552078871623
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -120,6 +121,7 @@ MonoBehaviour:
   - transform: {fileID: 8798729699660159013}
     m: 4
   <Attract_Other>k__BackingField: 1
+  <AttractByOther>k__BackingField: 1
 --- !u!50 &8798729699660159034
 Rigidbody2D:
   serializedVersion: 4

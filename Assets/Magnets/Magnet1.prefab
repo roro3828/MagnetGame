@@ -77,8 +77,8 @@ SpriteRenderer:
   m_SortingLayerID: 1256821507
   m_SortingLayer: 1
   m_SortingOrder: 0
-  m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
-  m_Color: {r: 1, g: 0, b: 0, a: 1}
+  m_Sprite: {fileID: 21300000, guid: 2f63d322104a671449fdbd6c99af435c, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -104,6 +104,7 @@ MonoBehaviour:
   - transform: {fileID: 2952358560870814814}
     m: 0.2
   <Attract_Other>k__BackingField: 1
+  <AttractByOther>k__BackingField: 1
 --- !u!114 &2952358560870814784
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -120,6 +121,7 @@ MonoBehaviour:
   <NextSuica>k__BackingField: {fileID: 7100672549379685347, guid: a7523c081c698da45a831fbd6e07737c, type: 3}
   score: 1
   MergeSE: {fileID: 8300000, guid: 0f7dcb73878cb05419ff0ee135762efa, type: 3}
+  <DisplayScale>k__BackingField: 10
 --- !u!50 &2952358560870814785
 Rigidbody2D:
   serializedVersion: 4

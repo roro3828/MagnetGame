@@ -20,6 +20,9 @@ public class Suica : MonoBehaviour
     [SerializeField]
     private AudioClip MergeSE;
 
+    [field:SerializeField]
+    public float DisplayScale{get;private set;}=1f;
+
     void Awake()
     {
         guid=Guid.NewGuid();
